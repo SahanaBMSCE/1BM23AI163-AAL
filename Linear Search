@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+	int n;
+	printf("Enter the size of the array : ");
+	scanf("%d",&n);
+	int a[n], i, pos=-1;
+	srand(time(NULL));
+	for(i=0; i<n; i++)
+		a[i] = rand() % 10000;
+	int k = rand() % 100000;
+	clock_t start_time = clock();
+	for (i=0; i<n; i++)
+	{
+		if (k == a[i])
+		{
+			pos = i+1;
+			break ;
+		}
+	}
+	clock_t end_time = clock();
+	double e_time = (double) (end_time - start_time) / CLOCKS_PER_SEC;
+	printf("Time taken for linear search of array with %d elements is %f seconds\n", n, e_time);
+	if (pos==-1)
+		printf("The element %d is not present in the array",k);
+	else 
+		printf("The element %d is present at the loction %d in the array",k,pos);
+}
