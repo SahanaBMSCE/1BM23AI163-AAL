@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int n;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+    int a[n], i, j;
+    srand(time(NULL));
+    for (i = 0; i < n; i++) {
+        a[i] = rand() % 10000;
+    }
+    clock_t start_time = clock();
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                int temp = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = temp;
+            }
+        }
+    }
+    clock_t end_time = clock();
+    double elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Time taken for bubble sort of array with %d elements is %f seconds\n", n, elapsed_time);
+    return 0;
+}
