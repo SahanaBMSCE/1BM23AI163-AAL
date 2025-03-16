@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+void main() {
+	int n, i, j, pos = -1;
+	printf("Enter the size of the array : ");
+	scanf("%d",&n);
+	int a[n];
+	srand(time(NULL));
+	for(i=0; i<n; i++)
+		a[i] = rand() % 100000;
+	for(i=0; i<n; i++)
+	{
+		for(j=0; j<n-i-1; j++)
+		{
+			if(a[j] > a[j+1])
+			{
+				int temp = a[j];
+				a[j] = a[j+1];
+				a[j+1] = temp;
+			}
+		}
+	}
+	/*printf("The sorted array is :\n");
+	for (i = 0; i < n; i++)
+		printf("%d\t", a[i]);
+	printf("\n");*/
+	int k = rand() % 100000;
+	clock_t st = clock();
+	int left = 0, right = n;
+	while (left <= right)
+	{
+		i = left + (right - left) / 2;
+		if (k == a[i])
+		{
+			pos = i + 1 ;
+			break;
+		}
+		else if (k > a[i])
+			left = i + 1;
+		else 
+			right = i - 1;
+	}
+	clock_t et = clock();
+	double te = (double) (et - st) / CLOCKS_PER_SEC;
+	printf("Time taken for binary search of an array of size %d is %f", n, te);
+	if (pos==-1) 
+		printf("\nThe element %d is not present in the array", k);
+	else 
+		printf("\nThe element %d is present at the position %d in the arrray", k, pos);
+}
