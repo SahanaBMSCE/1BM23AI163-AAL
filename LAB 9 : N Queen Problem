@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define N 4  // Number of cities
+
+// Distance matrix
+int dist[N][N] = {
+    {0, 10, 15, 20},
+    {10, 0, 35, 25},
+    {15, 35, 0, 30},
+    {20, 25, 30, 0}
+};
+
+// Function to calculate the total distance of a given path
+int calculatePathLength(int path[]) {
+    int length = 0;
+    for (int i = 0; i < N - 1; i++) {
+        length += dist[path[i]][path[i + 1]];
+    }
+    length += dist[path[N - 1]][path[0]];  // Return to starting city
+    return length;
+}
+
+// Function to generate all permutations of cities and find the shortest path
+void permute(int path[], int start, int end, int *minLength, int *bestPath) {
+    if (start == end) {
+        int pathLength = calculatePathLength(path);
+        if (pathLength < *minLength) {
+            *minLength = pathLength;
+            for (int i = 0; i < N; i++) {
+                bestPath[i] = path[i];
+            }
+        }
+    } else {
+        for (int i = start; i <= end; i++) {
+            // Swap elements
+            int temp = path[start];
+            path[start] = path[i];
+            path[i] = temp;
+
+            // Recurse
+            permute(path, start + 1, end, minLength, bestPath);
+
+            // Backtrack
+            temp = path[start];
+            path[start] = path[i];
+            path[i] = temp;
+        }
+    }
+}
+
+int main() {
+    int path[N] = {0, 1, 2, 3};  // Initial path (cities 0, 1, 2, 3)
+    int minLength = INT_MAX;  // Initialize minLength to a large value
+    int bestPath[N];
+
+    permute(path, 0, N - 1, &minLength, bestPath);
+
+    printf("Shortest Path Length: %d\n", minLength);
+    printf("Best Path: ");
+    for (int i = 0; i < N; i++) {
+        printf("%d ", bestPath[i]);
+    }
+    printf("%d\n", bestPath[0]);  // Return to starting city
+    return 0;
+}
